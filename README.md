@@ -4,7 +4,7 @@ Simple tasks/todo list program for the [Agon Light™](https://github.com/TheByt
 
 ## Screenshots
 
-![Main](https://www.gluonspace.com/files/agon-tasks.png)
+![Main](https://www.gluonspace.com/files/agon-tasks-v1.0.0.png)
 
 ## Install
 
@@ -24,5 +24,5 @@ From MOS:
 
 ```
 *load bbcbasic.bin
-*run . /path/to/tasks.bas"
+*run . /path/to/tasks.bas
 ```
