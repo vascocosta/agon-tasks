@@ -22,115 +22,115 @@
   220 MODE 3
   230 VDU 23,1,0;0;0;0;
   240 COLOUR 15: COLOUR 132
-  250 CLS
-  260 PROC_SHOW_TITLE
-  270 PROC_READ_TASKS
-  280 PROC_SHOW_TASKS
-  290 REPEAT
-  300   K$ = GET$
-  310   V = VAL(K$)
-  320   IF ASC(K$) < 97 THEN K$ = CHR$(ASC(K$) + 32)
-  330   IF V > 0 AND V < 9 THEN  PROC_TOGGLE_STATE(V - 1): PROC_SHOW_TASKS
-  340   IF K$ = "a" THEN PROC_EDIT_TASK(0): PROC_SHOW_TASKS
-  350   IF K$ = "b" THEN PROC_EDIT_TASK(1): PROC_SHOW_TASKS
-  360   IF K$ = "c" THEN PROC_EDIT_TASK(2): PROC_SHOW_TASKS
-  370   IF K$ = "d" THEN PROC_EDIT_TASK(3): PROC_SHOW_TASKS
-  380   IF K$ = "e" THEN PROC_EDIT_TASK(4): PROC_SHOW_TASKS
-  390   IF K$ = "f" THEN PROC_EDIT_TASK(5): PROC_SHOW_TASKS
-  400   IF K$ = "g" THEN PROC_EDIT_TASK(6): PROC_SHOW_TASKS
-  410   IF K$ = "h" THEN PROC_EDIT_TASK(7): PROC_SHOW_TASKS
-  420   IF K$ = "r" THEN PROC_CREATE_DB: PROC_READ_TASKS: PROC_SHOW_TASKS
-  430 UNTIL K$ = "q"
-  440 CLS
-  450 PRINT CHR$(169); " 2024 gluon - https://github.com/vascocosta/agon-tasks"
-  460 VDU 23,1,1;0;0;0;
-  470 END
-  480 :
-  490 REM =====================================================================
-  500 REM Procedure to read tasks
-  510 REM =====================================================================
-  520 :
-  530 DEF PROC_READ_TASKS
-  540 LOCAL FD, I, STATE$, TASK$
-  550 FOR I = 0 TO 7
-  560   TASKS$(I) = ""
-  570   STATES$(I) = ""
-  580 NEXT I
-  590 FD = OPENIN FILE$
-  600 IF FD = 0 THEN PROC_CREATE_DB: FD = OPENIN FILE$
-  610 I = 0
-  620 REPEAT
-  630   INPUT#FD, TASK$
-  640   INPUT#FD, STATE$
-  650   TASKS$(I) = FN_CLEAN_STR(TASK$)
-  660   STATES$(I) = FN_CLEAN_STR(STATE$)
-  670   I = I + 1
-  680 UNTIL EOF#FD
-  690 CLOSE#FD
-  700 ENDPROC
-  710 :
-  720 REM =====================================================================
-  730 REM Procedure to save tasks
-  740 REM =====================================================================
-  750 :
-  760 DEF PROC_SAVE_TASKS
-  770 LOCAL FD, I, T$
-  780 FD = OPENOUT FILE$
-  790 IF FD = 0 THEN PRINT "COULD NOT OPEN TASKS FILE": END
-  800 FOR I = 0 TO 7
-  810   T$ = LEFT$(TASKS$(I), 39)
-  820   IF TASKS$(I) <> "" AND STATES$(I) <> "" THEN PRINT#FD, T$, STATES$(I)
-  830 NEXT I
-  840 CLOSE#FD
-  850 ENDPROC
-  860 :
-  870 REM =====================================================================
-  880 REM Procedure to show tasks
-  890 REM =====================================================================
-  900 :
-  910 DEF PROC_SHOW_TASKS
-  920 CLS
-  930 PROC_SHOW_TITLE
-  940 MOVE 160,860
-  950 GCOL 0, 14: DRAW 1120,860
-  960 FOR I = 0 TO 7
-  970   COLOUR 10: PRINT TAB(10, I + 6) CHR$(65 + I);
-  980   COLOUR 7: PRINT " edit  ";
-  990   COLOUR 10: PRINT STR$(I + 1);
- 1000   COLOUR 7: PRINT " toggle" + "  ";
- 1010   COLOUR 15: PRINT LEFT$(TASKS$(I), 39);
- 1020   IF STATES$(I) = CHR$(240) THEN COLOUR 10 ELSE COLOUR 9
- 1030   PRINT TAB(69, I + 6) STATES$(I)
- 1040   COLOUR 15
- 1050 NEXT I
- 1060 MOVE 160,500
- 1070 GCOL 0, 14: DRAW 1120,500
- 1080 PROC_SHOW_MENU
- 1090 VDU 31,10,18
- 1100 ENDPROC
+  250 PROC_SHOW_APP
+  260 REPEAT
+  270   K$ = GET$
+  280   V = VAL(K$)
+  290   IF ASC(K$) < 97 THEN K$ = CHR$(ASC(K$) + 32)
+  300   IF V > 0 AND V < 9 THEN  PROC_TOGGLE_STATE(V - 1): PROC_SHOW_TASKS
+  310   IF K$ = "a" THEN PROC_EDIT_TASK(0): PROC_SHOW_TASKS
+  320   IF K$ = "b" THEN PROC_EDIT_TASK(1): PROC_SHOW_TASKS
+  330   IF K$ = "c" THEN PROC_EDIT_TASK(2): PROC_SHOW_TASKS
+  340   IF K$ = "d" THEN PROC_EDIT_TASK(3): PROC_SHOW_TASKS
+  350   IF K$ = "e" THEN PROC_EDIT_TASK(4): PROC_SHOW_TASKS
+  360   IF K$ = "f" THEN PROC_EDIT_TASK(5): PROC_SHOW_TASKS
+  370   IF K$ = "g" THEN PROC_EDIT_TASK(6): PROC_SHOW_TASKS
+  380   IF K$ = "h" THEN PROC_EDIT_TASK(7): PROC_SHOW_TASKS
+  390   IF K$ = "r" THEN PROC_CREATE_DB: PROC_SHOW_APP
+  400 UNTIL K$ = "q"
+  410 CLS
+  420 PRINT CHR$(169); " 2024 gluon - https://github.com/vascocosta/agon-tasks"
+  430 VDU 23,1,1;0;0;0;
+  440 END
+  450 :
+  460 REM =====================================================================
+  470 REM Procedure to read tasks
+  480 REM =====================================================================
+  490 :
+  500 DEF PROC_READ_TASKS
+  510 LOCAL FD, I, STATE$, TASK$
+  520 FOR I = 0 TO 7
+  530   TASKS$(I) = ""
+  540   STATES$(I) = ""
+  550 NEXT I
+  560 FD = OPENIN FILE$
+  570 IF FD = 0 THEN PROC_CREATE_DB: FD = OPENIN FILE$
+  580 I = 0
+  590 REPEAT
+  600   INPUT#FD, TASK$
+  610   INPUT#FD, STATE$
+  620   TASKS$(I) = FN_CLEAN_STR(TASK$)
+  630   STATES$(I) = FN_CLEAN_STR(STATE$)
+  640   I = I + 1
+  650 UNTIL EOF#FD
+  660 CLOSE#FD
+  670 ENDPROC
+  680 :
+  690 REM =====================================================================
+  700 REM Procedure to save tasks
+  710 REM =====================================================================
+  720 :
+  730 DEF PROC_SAVE_TASKS
+  740 LOCAL FD, I, T$
+  750 FD = OPENOUT FILE$
+  760 IF FD = 0 THEN PRINT "COULD NOT OPEN TASKS FILE": END
+  770 FOR I = 0 TO 7
+  780   T$ = LEFT$(TASKS$(I), 39)
+  790   IF TASKS$(I) <> "" AND STATES$(I) <> "" THEN PRINT#FD, T$, STATES$(I)
+  800 NEXT I
+  810 CLOSE#FD
+  820 ENDPROC
+  830 :
+  840 REM =====================================================================
+  850 REM Procedure to show tasks
+  860 REM =====================================================================
+  870 :
+  880 DEF PROC_SHOW_TASKS
+  890 MOVE 160,860
+  900 GCOL 0, 14: DRAW 1120,860
+  910 FOR I = 0 TO 7
+  920   COLOUR 10: PRINT TAB(10, I + 6) CHR$(65 + I);
+  930   COLOUR 7: PRINT " edit  ";
+  940   COLOUR 10: PRINT STR$(I + 1);
+  950   COLOUR 7: PRINT " toggle" + "  ";
+  960   COLOUR 15: PRINT LEFT$(TASKS$(I), 39);
+  970   FOR J = 1 TO (39 - LEN(TASKS$(I)))
+  980     PRINT " ";
+  990   NEXT J
+ 1000   IF STATES$(I) = CHR$(240) THEN COLOUR 10 ELSE COLOUR 9
+ 1010   PRINT TAB(69, I + 6) STATES$(I)
+ 1020   COLOUR 15
+ 1030 NEXT I
+ 1040 MOVE 160,500
+ 1050 GCOL 0, 14: DRAW 1120,500
+ 1060 ENDPROC
+ 1070 :
+ 1080 REM =====================================================================
+ 1090 REM Procedure to toggle the state
+ 1100 REM =====================================================================
  1110 :
- 1120 REM =====================================================================
- 1130 REM Procedure to toggle the state
- 1140 REM =====================================================================
- 1150 :
- 1160 DEF PROC_TOGGLE_STATE(I)
- 1170 IF STATES$(I) = CROSS$ THEN STATES$(I) = TICK$ ELSE STATES$(I) = CROSS$
- 1180 SOUND 1,-7,200,1
- 1190 PROC_SAVE_TASKS
- 1200 ENDPROC
+ 1120 DEF PROC_TOGGLE_STATE(I)
+ 1130 IF STATES$(I) = CROSS$ THEN STATES$(I) = TICK$ ELSE STATES$(I) = CROSS$
+ 1140 SOUND 1,-7,200,1
+ 1150 PROC_SAVE_TASKS
+ 1160 ENDPROC
+ 1170 :
+ 1180 REM =====================================================================
+ 1190 REM Procedure to edit a task
+ 1200 REM =====================================================================
  1210 :
- 1220 REM =====================================================================
- 1230 REM Procedure to edit a task
- 1240 REM =====================================================================
- 1250 :
- 1260 DEF PROC_EDIT_TASK(I)
- 1270 LOCAL TEXT$
- 1280 VDU 23,1,1;0;0;0;
- 1290 INPUT "Description"; TEXT$
- 1300 TASKS$(I) = TEXT$
- 1310 STATES$(I) = CHR$(241)
- 1320 PROC_SAVE_TASKS
- 1330 VDU 23,1,0;0;0;0;
+ 1220 DEF PROC_EDIT_TASK(I)
+ 1230 LOCAL TEXT$, BLANK$, LT
+ 1240 VDU 23,1,1;0;0;0;
+ 1250 INPUT TAB(10, 18); "Description"; TEXT$
+ 1260 BLANK$ = "                                                            "
+ 1270 PRINT TAB(10,18); BLANK$
+ 1280 TASKS$(I) = TEXT$
+ 1290 STATES$(I) = CHR$(241)
+ 1300 PROC_SAVE_TASKS
+ 1310 VDU 23,1,0;0;0;0;
+ 1320 LT = LEN(TEXT$)
+ 1330 IF LT > 47 THEN PROC_SHOW_APP
  1340 ENDPROC
  1350 :
  1360 REM =====================================================================
@@ -162,24 +162,36 @@
  1620 ENDPROC
  1630 :
  1640 REM =====================================================================
- 1650 REM Procedure to create the database
+ 1650 REM Procedure to show the app
  1660 REM =====================================================================
  1670 :
- 1680 DEF PROC_CREATE_DB
- 1690 FD = OPENOUT FILE$
- 1700 PRINT#FD, ""
- 1710 CLOSE#FD
- 1720 ENDPROC
- 1730 :
- 1740 REM =====================================================================
- 1750 REM Function to clean a string
+ 1680 DEF PROC_SHOW_APP
+ 1690 CLS
+ 1700 PROC_READ_TASKS
+ 1710 PROC_SHOW_TITLE
+ 1720 PROC_SHOW_TASKS
+ 1730 PROC_SHOW_MENU
+ 1740 ENDPROC
+ 1750 :
  1760 REM =====================================================================
- 1770 :
- 1780 DEF FN_CLEAN_STR(S$)
- 1790 LOCAL C$, I
- 1800 C$ = ""
- 1810 FOR I = 1 TO LEN(S$)
- 1820   IF MID$(S$, I, 1) <> CHR$(10) THEN C$ = C$ + MID$(S$, I, 1)
- 1830 NEXT I
- 1840 = C$
- 1850 ENDDEF
+ 1770 REM Procedure to create the database
+ 1780 REM =====================================================================
+ 1790 :
+ 1800 DEF PROC_CREATE_DB
+ 1810 FD = OPENOUT FILE$
+ 1820 PRINT#FD, ""
+ 1830 CLOSE#FD
+ 1840 ENDPROC
+ 1850 :
+ 1860 REM =====================================================================
+ 1870 REM Function to clean a string
+ 1880 REM =====================================================================
+ 1890 :
+ 1900 DEF FN_CLEAN_STR(S$)
+ 1910 LOCAL C$, I
+ 1920 C$ = ""
+ 1930 FOR I = 1 TO LEN(S$)
+ 1940   IF MID$(S$, I, 1) <> CHR$(10) THEN C$ = C$ + MID$(S$, I, 1)
+ 1950 NEXT I
+ 1960 = C$
+ 1970 ENDDEF
