@@ -1,0 +1,11 @@
+[package]
+name = "tasks"
+carriage_return = true
+numbering = 10
+emu_path = "/home/gluon/opt/fab-agon-emulator"
+version = "0.1.0"
+
+[dependencies]
+data = ""
+interface = ""
+utils = ""
